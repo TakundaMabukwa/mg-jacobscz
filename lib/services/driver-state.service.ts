@@ -1,5 +1,6 @@
 import { requireRole } from "@/lib/auth/guards"
 import { createServiceRoleClient } from "@/lib/supabase/service-role"
+import { sendDriverMovedOnSms } from "@/lib/services/sms.service"
 import {
   moveDriverStateSchema,
   updateDriverStateSchema,
@@ -24,6 +25,7 @@ export async function moveDriverOff(input: unknown) {
   })
 
   if (error) throw error
+
   return data
 }
 
@@ -42,6 +44,16 @@ export async function moveDriverActive(input: unknown) {
   })
 
   if (error) throw error
+
+  try {
+    await sendDriverMovedOnSms({
+      driverId: payload.driverId,
+      toNumber: "+27623662042",
+    })
+  } catch (smsError) {
+    console.error("Failed to send move active SMS", smsError)
+  }
+
   return data
 }
 

@@ -30,6 +30,8 @@ export const env = {
     process.env.SUPABASE_SERVICE_ROLE_KEY ??
     process.env.NEXT_PUBLIC_SERVICE_ROLE_KEY ??
     process.env.SERVICE_ROLE_KEY,
+  pingramApiKey: process.env.PINGRAM_API_KEY,
+  pingramBaseUrl: process.env.PINGRAM_BASE_URL,
   cronSecret: process.env.CRON_SECRET,
   rosterBucket: process.env.SUPABASE_STORAGE_BUCKET_ROSTER ?? "roster-imports",
 }
@@ -51,4 +53,8 @@ export function requireServiceRoleKey(): string {
 
 export function requireCronSecret(): string {
   return requireEnv("CRON_SECRET")
+}
+
+export function requirePingramApiKey(): string {
+  return requireEnv("PINGRAM_API_KEY")
 }

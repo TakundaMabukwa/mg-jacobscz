@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
@@ -98,12 +99,18 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         <div className="flex h-full flex-col">
           <div className="p-4 pt-6">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sidebar-primary shadow-sm">
-                <Truck className="h-5 w-5 text-sidebar-primary-foreground" />
+              <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm">
+                <Image
+                  src="/Metafuellog.jpeg"
+                  alt="Metafuel logo"
+                  width={44}
+                  height={44}
+                  className="h-full w-full object-cover"
+                  priority
+                />
               </div>
               <div>
                 <h1 className="text-base font-semibold leading-tight">MetaLoad</h1>
-                <p className="text-xs text-sidebar-foreground/70">Fleet Allocation Platform</p>
               </div>
             </div>
           </div>

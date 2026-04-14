@@ -118,9 +118,8 @@ export default async function DashboardPage() {
                     <thead className="bg-secondary/40">
                       <tr className="border-b border-border">
                         <th className="w-[16%] text-left py-2 px-3 text-xs font-medium uppercase text-muted-foreground">Code</th>
-                        <th className="w-[41%] text-left py-2 px-3 text-xs font-medium uppercase text-muted-foreground">Driver</th>
-                        <th className="w-[18%] text-left py-2 px-3 text-xs font-medium uppercase text-muted-foreground">Days On</th>
-                        <th className="w-[25%] text-left py-2 px-3 text-xs font-medium uppercase text-muted-foreground">Actions</th>
+                        <th className="w-[58%] text-left py-2 px-3 text-xs font-medium uppercase text-muted-foreground">Driver</th>
+                        <th className="w-[26%] text-left py-2 px-3 text-xs font-medium uppercase text-muted-foreground">Days On</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -133,30 +132,27 @@ export default async function DashboardPage() {
                             key={driver.id as string}
                             className={`border-b border-border last:border-0 align-top ${activeThresholdRow(Number(driver.current_state_days ?? 0))}`}
                           >
-                            <td className="py-2 px-3 text-sm font-medium text-foreground align-top break-words">{driver.driver_code}</td>
-                            <td className="py-2 px-3 align-top">
+                            <td className="py-1.5 px-3 text-sm font-medium text-foreground align-top break-words">{driver.driver_code}</td>
+                            <td className="py-1.5 px-3 align-top">
                               <div className="break-words text-sm text-foreground">{driver.first_name} {driver.surname}</div>
                               {driver.current_vehicle ? (
-                                <div className="mt-1 text-xs text-muted-foreground">
+                                <div className="mt-0.5 text-xs text-muted-foreground">
                                   {driver.current_vehicle.vehicle_number} - {driver.current_vehicle.registration_number ?? "No reg"}
                                 </div>
                               ) : null}
-                            </td>
-                            <td className="py-2 px-3 text-sm text-muted-foreground align-top">{stateDaysLabel("active", Number(driver.current_state_days ?? 0))}</td>
-                            <td className="py-2 px-3 align-top">
-                              <div className="flex min-w-0 flex-col gap-2">
+                              <div className="mt-2 flex flex-wrap gap-1.5">
                                 <form action={submitMoveDriverOff}>
                                   <input type="hidden" name="driverId" value={String(driver.id)} />
                                   <input type="hidden" name="reasonCode" value="dashboard_move_off" />
-                                  <Button type="submit" size="sm" variant="outline" className="w-full px-2">Move Off</Button>
+                                  <Button type="submit" size="sm" variant="outline" className="h-7 px-2.5 text-xs">Move Off</Button>
                                 </form>
                                 {driver.current_vehicle_id ? (
                                   <>
-                                    <form action={submitReassignDriver} className="flex flex-col gap-2">
+                                    <form action={submitReassignDriver} className="flex items-center gap-1.5">
                                       <input type="hidden" name="vehicleId" value={String(driver.current_vehicle_id)} />
                                       <select
                                         name="newDriverId"
-                                        className="h-8 w-full min-w-0 rounded-md border border-input bg-background px-2 text-xs"
+                                        className="h-7 min-w-[180px] rounded-md border border-input bg-background px-2 text-xs"
                                         required
                                         defaultValue=""
                                         disabled={replacementOptions.length === 0}
@@ -170,15 +166,15 @@ export default async function DashboardPage() {
                                           </option>
                                         ))}
                                       </select>
-                                      <Button type="submit" size="sm" className="w-full px-2" disabled={replacementOptions.length === 0}>
+                                      <Button type="submit" size="sm" className="h-7 px-2.5 text-xs" disabled={replacementOptions.length === 0}>
                                         Exchange
                                       </Button>
                                     </form>
-                                    <form action={submitMoveDriverVehicle} className="flex flex-col gap-2">
+                                    <form action={submitMoveDriverVehicle} className="flex items-center gap-1.5">
                                       <input type="hidden" name="allocationId" value={String(driver.current_allocation_id)} />
                                       <select
                                         name="targetVehicleId"
-                                        className="h-8 w-full min-w-0 rounded-md border border-input bg-background px-2 text-xs"
+                                        className="h-7 min-w-[160px] rounded-md border border-input bg-background px-2 text-xs"
                                         required
                                         defaultValue=""
                                         disabled={targetVehicleOptions.length === 0}
@@ -192,7 +188,7 @@ export default async function DashboardPage() {
                                           </option>
                                         ))}
                                       </select>
-                                      <Button type="submit" size="sm" variant="secondary" className="w-full px-2" disabled={targetVehicleOptions.length === 0}>
+                                      <Button type="submit" size="sm" variant="secondary" className="h-7 px-2.5 text-xs" disabled={targetVehicleOptions.length === 0}>
                                         Move Vehicle
                                       </Button>
                                     </form>
@@ -200,6 +196,7 @@ export default async function DashboardPage() {
                                 ) : null}
                               </div>
                             </td>
+                            <td className="py-1.5 px-3 text-sm text-muted-foreground align-top">{stateDaysLabel("active", Number(driver.current_state_days ?? 0))}</td>
                           </tr>
                         )
                       })}

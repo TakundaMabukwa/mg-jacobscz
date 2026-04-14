@@ -1,6 +1,7 @@
 import { requireRole } from "@/lib/auth/guards"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { isDriverEligibleForAllocation } from "@/lib/services/allocation-eligibility"
+import { sendDriverAllocationSms } from "@/lib/services/sms.service"
 import {
   assignDriverSchema,
   moveActiveDriverVehicleSchema,
@@ -43,6 +44,17 @@ export async function assignDriverToVehicle(input: unknown) {
   })
 
   if (error) throw error
+
+  try {
+    await sendDriverAllocationSms({
+      driverId: payload.driverId,
+      vehicleId: payload.vehicleId,
+      effectiveFrom: payload.effectiveFrom ?? null,
+    })
+  } catch (smsError) {
+    console.error("Failed to send allocation SMS", smsError)
+  }
+
   return data
 }
 
@@ -81,6 +93,17 @@ export async function reassignDriver(input: unknown) {
   })
 
   if (error) throw error
+
+  try {
+    await sendDriverAllocationSms({
+      driverId: payload.newDriverId,
+      vehicleId: payload.vehicleId,
+      effectiveFrom: payload.effectiveFrom ?? null,
+    })
+  } catch (smsError) {
+    console.error("Failed to send reallocation SMS", smsError)
+  }
+
   return data
 }
 
@@ -97,6 +120,7 @@ export async function removeAllocation(input: unknown) {
   })
 
   if (error) throw error
+
   return data
 }
 
@@ -176,5 +200,16 @@ export async function moveActiveDriverToVehicle(input: unknown) {
   })
 
   if (error) throw error
+
+  try {
+    await sendDriverAllocationSms({
+      driverId: String(allocation.driver_id),
+      vehicleId: payload.targetVehicleId,
+      effectiveFrom: payload.effectiveFrom ?? null,
+    })
+  } catch (smsError) {
+    console.error("Failed to send move vehicle SMS", smsError)
+  }
+
   return data
 }

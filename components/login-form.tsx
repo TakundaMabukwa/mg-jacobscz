@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
@@ -13,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
-import { Eye, EyeOff, Truck } from "lucide-react"
+import { Eye, EyeOff } from "lucide-react"
 
 export function LoginForm({
   className,
@@ -49,12 +50,18 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <div className="flex justify-center">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent text-accent-foreground">
-            <Truck className="h-6 w-6" />
+          <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm">
+            <Image
+              src="/Metafuellog.jpeg"
+              alt="Metafuel logo"
+              width={56}
+              height={56}
+              className="h-full w-full object-cover"
+              priority
+            />
           </div>
           <div className="text-left">
             <h1 className="text-2xl font-semibold tracking-tight text-white">MetaLoad</h1>
-            <p className="text-sm text-white/75">Fleet Allocation Platform</p>
           </div>
         </div>
       </div>
